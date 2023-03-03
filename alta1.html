@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Muhamad Nauval Azhar">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="This is a login page template based on Bootstrap 5">
+	<title>Alta d'usuari</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<script src="https://github.com/blueimp/JavaScript-MD5/blob/2c00da944e9f9ecc2348cf9ed26cd3808106aee2/js/md5.min.js"></script>
+</head>
+
+<body>
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-sm-center h-100">
+				<div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+					<div class="text-center my-5">
+						<img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="logo" width="100">
+					</div>
+					<div class="card shadow-lg">
+						<div class="card-body p-5">
+							<h1 class="fs-4 card-title fw-bold mb-4">Alta d'usuari</h1>
+							<form class="needs-validation" novalidate="" autocomplete="off">
+								<div class="mb-3">
+									<label class="mb-2 text-muted" for="email">Nom d'usuari</label>
+									<input id="nom" type="text" class="form-control" name="nom" value="Albert Llobet Lorenzo" required autofocus>
+									<div class="invalid-feedback">
+										Cal afegir un nom.
+									</div>
+								</div>
+								<div class="mb-3">
+									<label class="mb-2 text-muted" for="email">Correu electrònic</label>
+									<input id="correu" type="email" class="form-control" name="correu" value="alll.innovacio@emelcat.cat" required autofocus>
+									<div class="invalid-feedback">
+										El correu introduit no és vàlid.
+									</div>
+								</div>
+								<div class="mb-3">
+									<label class="mb-2 text-muted" for="email">Permisos</label>
+									<input id="permisos" type="number" class="form-control" name="permisos" value="1" required autofocus>
+									<div class="invalid-feedback">
+										No existeixen aquests permisos.
+									</div>
+								</div>
+								<div class="mb-3">
+									<div class="mb-2 w-100">
+										<label class="text-muted" for="password">Contrasenya</label>
+										<a href="forgot.html" class="float-end">
+											Has oblidat la constrasenya?
+										</a>
+									</div>
+									<input id="contrasenya" type="password" class="form-control" name="contrasenya" value="12345" required>
+								    <div class="invalid-feedback">
+								    	Cal posar contrasenya.
+							    	</div>
+								</div>
+
+								<div class="d-flex align-items-center">
+									<div class="form-check">
+										<input type="checkbox" name="remember" id="remember" class="form-check-input">
+										<label for="remember" class="form-check-label">Recorda'm</label>
+									</div>
+									<button type="button" onclick="ferAlta()" class="btn btn-primary ms-auto">
+										Alta
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="text-center mt-5 text-muted">
+						Copyright &copy; 2023 &mdash; Emelcat Sccl 
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		async function ferAlta()
+		{
+			var nomusuari = document.getElementById('nom').value;
+			var correu = document.getElementById('correu').value;
+			var contrasenya = document.getElementById('contrasenya').value;
+			var hash_contrasenya = await hash(contrasenya);
+			var permisos = document.getElementById('permisos').value;
+			console.log(nomusuari, correu, contrasenya, hash_contrasenya, permisos);
+			try {
+				const response = await axios.get('http://LAPTOP-P0O0M97V:5000/alta',{
+					params:{
+						nom: nomusuari,
+						correu: correu,
+						contrasenya: hash_contrasenya,
+						permisos: permisos
+					}
+				});
+				console.log("Èxit:",response);
+			} catch (error) {
+				console.log("Error:", error.response);
+			}
+
+		}
+
+		function hash(string) {
+			const utf8 = new TextEncoder().encode(string);
+  			return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => 
+				{
+    			const hashArray = Array.from(new Uint8Array(hashBuffer));
+    			const hashHex = hashArray
+      			.map((bytes) => bytes.toString(16).padStart(2, '0'))
+      			.join('');
+    			return hashHex;
+  				}
+			);
+		}
+	</script>
+</body>
+</html>
