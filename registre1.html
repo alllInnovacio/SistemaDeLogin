@@ -7,7 +7,6 @@
 	<meta name="description" content="This is a login page template based on Bootstrap 5">
 	<title>Registre d'usuari</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-	<script src="https://github.com/blueimp/JavaScript-MD5/blob/2c00da944e9f9ecc2348cf9ed26cd3808106aee2/js/md5.min.js"></script>
 </head>
 
 <body>
@@ -21,7 +20,7 @@
 					<div class="card shadow-lg">
 						<div class="card-body p-5">
 							<h1 class="fs-4 card-title fw-bold mb-4">Registre d'entrada</h1>
-							<form class="needs-validation" novalidate="" autocomplete="off">-->
+							<form class="needs-validation" novalidate="" autocomplete="off">
 							<!--<form action="http://LAPTOP-P0O0M97V:5000/registre" method="POST" class="needs-validation" novalidate="" autocomplete="off">-->
 								<div class="mb-3">
 									<label class="mb-2 text-muted" for="email">Correu electrònic</label>
@@ -55,21 +54,21 @@
 								</div>
 							</form>
 						</div>
-						<div class="card-footer py-3 border-0">
+						<!--<div class="card-footer py-3 border-0">
 							<div class="text-center">
 								No tens un compte? <a href="register.html" class="text-dark">Instruccions per a crear-ne un</a>
 							</div>
 						</div>
 						<div class="card-footer py-3 border-0">
 							<div class="text-center">
-								<a href="http://LAPTOP-P0O0M97V:5000/funcio1">Funcio 1</a>
+								<a href="http://127.0.0.1:5000/funcio1">Funcio 1</a>
 							</div>
 						</div>
 						<div class="card-footer py-3 border-0">
 							<div class="text-center">
-								<a href="http://LAPTOP-P0O0M97V:5000/funcio2">Funcio 2</a>
+								<a href="http://127.0.0.1:5000/funcio2">Funcio 2</a>
 							</div>
-						</div>
+						</div>-->
 						<div class="card-footer py-3 border-0">
 							<div class="text-center">
 								<button onclick="funcio1()">Funcio 1</button>
@@ -91,30 +90,32 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
+		
 		async function ferRegistre()
 		{
 			var correu = document.getElementById('correu').value;
 			var contrasenya = document.getElementById('contrasenya').value;
-			var hash_contrasenya = await hash(contrasenya);
-			console.log(correu, contrasenya, hash_contrasenya);
+			//var hash_contrasenya = await hash(contrasenya);
+			console.log(correu, contrasenya)//, hash_contrasenya);
 			try {
-				const response = await axios.get('http://LAPTOP-P0O0M97V:5000/registre',{
+				const instance = axios.create({withCredentials: true});
+				const response = await instance.get('http://127.0.0.1:5000/registre1',{
 					params:{
 						correu: correu,
-						contrasenya: hash_contrasenya
+						contrasenya: contrasenya
 					}
 				});
 				console.log("Èxit:",response);
 			} catch (error) {
-				console.log("Error:", error.response);
+				console.log("Error:", error);
 			}
 
 		}
 		async function funcio1()
 		{
 			try {
-				const response = await axios.get('http://LAPTOP-P0O0M97V:5000/funcio1');
-				console.log(response);
+				const response = await axios.get('http://127.0.0.1:5000/funcio1',{withCredentials: true});
+				console.log(response.data);
 			} catch (error){
 				console.log(error);
 			}
@@ -122,8 +123,8 @@
 		async function funcio2()
 		{
 			try {
-				const response = await axios.get('http://LAPTOP-P0O0M97V:5000/funcio2');
-				console.log(response);
+				const response = await axios.get('http://127.0.0.1:5000/funcio2',{withCredentials: true});
+				console.log(response.data);
 			} catch (error){
 				console.log(error);
 			}

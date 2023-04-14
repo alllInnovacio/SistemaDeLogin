@@ -102,7 +102,7 @@
 
 		}
 
-		function hash(string) {
+		function hash(string) { //Genera un SHA-256 hash
 			const utf8 = new TextEncoder().encode(string);
   			return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => 
 				{
